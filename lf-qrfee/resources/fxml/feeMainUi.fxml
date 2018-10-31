@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../assets/css/123.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="top.lf.control.FeeMainControl">
+    <top>
+        <ToolBar prefHeight="20.0" BorderPane.alignment="CENTER">
+            <items>
+                <MenuBar opacity="0.8" prefHeight="18.0">
+                    <menus>
+                        <Menu mnemonicParsing="true" text="(_S)系统">
+                            <items>
+                                <MenuItem fx:id="itBtn0101" text="参数设置" />
+                                <MenuItem fx:id="itBtn0102" text="Close" />
+                                <SeparatorMenuItem />
+                                <MenuItem mnemonicParsing="false" text="Close" />
+                                <MenuItem mnemonicParsing="false" text="Close" />
+                            </items>
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                            </accelerator>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="帮助？">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About" />
+                            </items>
+                        </Menu>
+                    </menus>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <padding>
+                        <Insets left="-4.0" />
+                    </padding>
+                </MenuBar>
+            </items>
+        </ToolBar>
+    </top>
+    <center>
+        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <tabs>
+                <Tab text="门诊收费">
+                    <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                            <top>
+                                <Pane prefHeight="45.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                                    <children>
+                                        <Label layoutX="28.0" layoutY="14.0" text="病人：" />
+                                        <TextField fx:id="patientNo" layoutX="65.0" layoutY="10.0" onAction="#patientNoTextFieldAction" />
+                                        <Button fx:id="btnQueryFee" layoutX="270.0" layoutY="10.0" mnemonicParsing="false" text="查询">
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Button>
+                                    </children>
+                                </Pane>
+                            </top>
+                            <center>
+                                <TableView fx:id="mzFeeTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <columns>
+                                        <TableColumn fx:id="colCheckBox" editable="false" prefWidth="40.0" resizable="false" sortable="false">
+                                            <graphic>
+                                                <CheckBox fx:id="colSelectAll" mnemonicParsing="false" />
+                                            </graphic>
+                                        </TableColumn>
+                                        <TableColumn fx:id="colVouchNo" editable="false" prefWidth="140.0" resizable="false" sortable="false" text="单据号" />
+                                        <TableColumn fx:id="colFeeType" editable="false" prefWidth="150.0" resizable="false" sortable="false" text="费用类别" />
+                                        <TableColumn fx:id="colFeeAmt" editable="false" prefWidth="100.0" resizable="false" sortable="false" text="金额" />
+                                        <TableColumn fx:id="colVouchDate" editable="false" prefWidth="160.0" resizable="false" text="开单时间" />
+                                    </columns>
+                                </TableView>
+                            </center>
+                            <bottom>
+                                <Pane prefHeight="65.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                                    <children>
+                                        <Label layoutX="15.0" layoutY="20.0" prefHeight="27.0" prefWidth="67.0" text="姓名：">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Label fx:id="patientName" layoutX="70.0" layoutY="20.0" prefHeight="27.0" prefWidth="51.0" text="李四">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="135.0" layoutY="20.0" text="，单据数：">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Label fx:id="feeVouchNum" layoutX="231.0" layoutY="20.0" prefHeight="27.0" prefWidth="33.0" textFill="#e11616">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="264.0" layoutY="20.0" text="，总费用：">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="351.0" layoutY="20.0" text="￥" textFill="#e11616">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Label fx:id="totalFeeAmt" layoutX="371.0" layoutY="20.0" prefHeight="27.0" prefWidth="88.0" textFill="#e11616">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Button fx:id="btnScanQrCode" layoutX="480.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#btnScanQrCode_OnClick" text="扫码支付">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Button>
+                                    </children>
+                                </Pane>
+                            </bottom>
+                        </BorderPane>
+                    </content>
+                </Tab>
+                <Tab text="收费记录">
+                    <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                            <top>
+                                <Pane prefHeight="55.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                                    <children>
+                                        <Button layoutX="524.0" layoutY="15.0" mnemonicParsing="false" text="搜索">
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Button>
+                                        <Label layoutX="18.0" layoutY="20.0" text="姓名：" />
+                                        <TextField layoutX="54.0" layoutY="16.0" prefHeight="25.0" prefWidth="100.0" />
+                                        <Label layoutX="165.0" layoutY="20.0" text="交易时间：" />
+                                        <DatePicker layoutX="225.0" layoutY="15.0" prefHeight="25.0" prefWidth="125.0" />
+                                        <Label layoutX="353.0" layoutY="20.0" text="~" />
+                                        <DatePicker layoutX="365.0" layoutY="15.0" prefHeight="25.0" prefWidth="125.0" />
+                                    </children>
+                                </Pane>
+                            </top>
+                            <center>
+                                <TableView prefHeight="286.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                                    <columns>
+                                        <TableColumn prefWidth="44.0" text="序号" />
+                                        <TableColumn prefWidth="77.0" text="病人姓名" />
+                                        <TableColumn prefWidth="56.0" text="单据数" />
+                                        <TableColumn prefWidth="84.0" text="总金额" />
+                                        <TableColumn text="操作员" />
+                                        <TableColumn prefWidth="109.0" text="收费时间" />
+                                        <TableColumn prefWidth="75.0" text="交易渠道" />
+                                        <TableColumn prefWidth="75.0" text="交易流水号" />
+                                        <TableColumn prefWidth="75.0" text="病人ID" />
+                                    </columns>
+                                </TableView>
+                            </center>
+                        </BorderPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>
