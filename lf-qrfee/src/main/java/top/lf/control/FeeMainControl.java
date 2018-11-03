@@ -1,13 +1,5 @@
 package top.lf.control;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
-import top.lf.core.AppContext;
-import top.lf.core.constant.AppConstant;
-import top.lf.vo.FeeVo;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,9 +7,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import top.lf.core.AppContext;
+import top.lf.core.constant.AppConstant;
+import top.lf.core.event.WindowsCloseEvent;
+import top.lf.vo.FeeVo;
 
 import java.io.IOException;
 import java.net.URL;
@@ -78,24 +79,6 @@ public class FeeMainControl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //################ 当前Stage各种控件事件绑定 #################
-        btnQueryFee.setOnMousePressed(event -> {
-           /* if(feeData != null){
-                int i = 1;
-                Double tmpAmt = new Double("0");
-                //姓名：张三 ，单据数：5 ，总费用：￥368.53
-                StringBuffer sb = new StringBuffer("姓名：张三 ，单据数：");
-                for (FeeVo itemData : feeData) {
-                    if(itemData.cb.isSelected()){
-                        sb.append(i++);
-                        sb.append("，总费用：￥");
-                        sb.append((tmpAmt+itemData.feeAmt));
-                        totalFeeMsg.setText(sb.toString());
-                    }
-                }
-            }*/
-        });
-
 
         //行选中事件(同一行不能连续两次触发该事件)
         mzFeeTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<FeeVo>() {
@@ -237,6 +220,7 @@ public class FeeMainControl implements Initializable {
         pkStage.setAlwaysOnTop(true);//始终位于顶层显示
         pkStage.setResizable(false);//禁止调整窗口大小
         AppContext.stageManager.addStage("qrScanStage",pkStage);
+        pkStage.setOnCloseRequest(new WindowsCloseEvent(pkStage,true));
         pkStage.show();
     }
 

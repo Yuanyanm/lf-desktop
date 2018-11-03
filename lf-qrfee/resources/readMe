@@ -1,0 +1,4 @@
+1、idea采用git首次下载导入项目时，需要手动Add Maven Project操作(指定项目对应pom.xml)并手动修改项目
+   名称(否则默认项目名称为main，可能还需要根据实际情况修正本地Maven配置路径)，最后Reimport项目。
+2、jfx打包maven命令->Execute Maven Goal。
+    mvn jfx:native

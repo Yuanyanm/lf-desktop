@@ -10,9 +10,12 @@ import top.lf.core.AppContext;
 import top.lf.core.constant.AppConstant;
 
 /**
- * Created by YuanYan on 2018/10/31.
+ * @Author:YuanYan
+ * @Create At: 2018/11/3 9:52
+ * @Params:
+ * @Return:
+ * @Description: 主程序入口
  */
-
 public class MainStage extends Application {
 
     private final String FXML_URL = "/fxml/loginUi.fxml";
