@@ -148,12 +148,6 @@ public class FeeMainControl implements Initializable {
         colVouchDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVouchDate()));
         mzFeeTable.setItems(feeData);
         autoCalculateFee();
-
-    }
-
-    @FXML
-    public void btnLogin() {
-
     }
 
     @FXML
@@ -219,7 +213,7 @@ public class FeeMainControl implements Initializable {
         pkStage.setScene(pkScene);
         pkStage.setAlwaysOnTop(true);//始终位于顶层显示
         pkStage.setResizable(false);//禁止调整窗口大小
-        AppContext.stageManager.addStage("qrScanStage",pkStage);
+        //AppContext.stageManager.addStage("qrScanStage",pkStage);
         pkStage.setOnCloseRequest(new WindowsCloseEvent(pkStage,true));
         pkStage.show();
     }

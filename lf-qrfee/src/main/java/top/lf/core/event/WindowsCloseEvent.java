@@ -22,7 +22,6 @@ public class WindowsCloseEvent implements EventHandler<WindowEvent> {
     }
 
     public void handle(WindowEvent event) {
-        System.out.println("------- "+ DateUtil.currentDateTime());
         if(!closeable){
             //阻止事件传递
             event.consume();
