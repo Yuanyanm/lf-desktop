@@ -11,7 +11,7 @@ public class ImageUtil {
         //info-友好提示类，notice-错误警告类
         String imgUrl = "assets/imgs/title/ts.png";//默认info
         if("notice".equals(imgType)){
-            imgUrl = "assets/imgs/icon/js.png";
+            imgUrl = "assets/imgs/title/js.png";
         }else if("paying".equals(imgType)){
             imgUrl = "assets/imgs/icon/paying.png";
         }

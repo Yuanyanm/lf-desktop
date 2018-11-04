@@ -1,6 +1,7 @@
 package top.lf.control;
 
 import cn.hutool.core.util.StrUtil;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -8,9 +9,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
+import top.lf.util.DateUtil;
 import top.lf.util.ImageUtil;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 /**
@@ -40,14 +44,87 @@ public class QrScanControl implements Initializable {
             msgLabel.setTextFill(Paint.valueOf("black"));
             return;
         } else {
-            btnSubmitPay.setDisable(true);//禁止再次提交
+            //禁止再次提交
+            btnSubmitPay.setDisable(true);
             /**
              *提交支付接口，并根据支付结果友好展示提示信息
              * 支付中：需要对方输入密码！——此种状态需要定时轮询支付结果
              * 支付失败：账户余额不足！
              * 支付失败：支付密码错误！......
+             * 支付成功，支付渠道【微信】，金额：Y99.99。
              */
-            msgLabel.setText("支付中，请稍后...");
+            Stage thisStage = (Stage) msgLabel.getScene().getWindow();
+            //********************** 支付中 ***************************
+            System.out.println("00: " + DateUtil.currentTime());
+            btnSubmitPay.setText("支付中...");
+            msgLabel.setText("支付中(请勿关闭当前窗口)，请稍后...");
+            System.out.println("11: " + DateUtil.currentTime());
+            System.out.println("22: " + DateUtil.currentTime());
+            long time = new Date().getTime();
+            while (true){
+                if(new Date().getTime() - time > 5000){
+                    System.out.println("----- " + DateUtil.currentTime());
+                    break;
+                }
+            }
+          /*  System.out.println("================ A");
+            msgLabel.setText("支付中：需要对方[输入密码]...");
+            int i = 0 ;
+            while (true){
+                if(new Date().getTime() - time > 5000){
+                    break;
+                }
+            }
+            System.out.println("================ B");
+            btnSubmitPay.setText("支付成功");
+            msgLabel.setText("[微信]支付成功，金额：￥99.99 ！");*/
+
+           /* Runnable runnable = new Runnable() {
+                public void run() {
+                    //临时计时变量（秒）
+                    int tempSecs = 0;
+                    while (true) {
+                        try {
+                            Thread.sleep(2000);
+                            //....轮训支付结果....
+                            System.out.println("轮训支付结果: " + DateUtil.currentTime());
+                            tempSecs ++;
+                            if(tempSecs == 2){
+                                msgLabel.setText("支付中：需要对方[输入密码]...");
+                            }
+                            if(tempSecs == 3){
+                                btnSubmitPay.setText("支付成功");
+                                msgLabel.setText("[微信]支付成功，金额：￥99.99 ！");
+                                //thisStage.close();
+                                break;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();*/
+            System.out.println("33: " + DateUtil.currentTime());
+
+            //********************* 支付失败 **************************
+            //需重新生成支付流水号
+            /*btnSubmitPay.setText("再次支付");
+            msgLabel.setGraphic(new ImageView(ImageUtil.getImage("notice")));
+            msgLabel.setText("支付失败：对方账户余额不足！");
+            qrCodeTxt.setText("");
+            btnSubmitPay.setDisable(false);*/
+            //********************* 支付成功 **************************
+            /*btnSubmitPay.setText("支付成功");
+            msgLabel.setText("[微信]支付成功，金额：￥99.99 ！");
+            try {
+                //支付成功，三秒后自动关闭扫码窗口
+                Thread.sleep(3000);
+                //thisStage.close();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
         }
     }
 
