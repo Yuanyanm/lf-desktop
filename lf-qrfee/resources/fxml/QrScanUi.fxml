@@ -32,5 +32,6 @@
                <Font name="System Bold" size="14.0" />
            </font>
        </Label>
+      <Label fx:id="payMsg" text="1213" visible="false" />
    </children>
 </AnchorPane>
