@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import top.lf.core.AppContext;
+import top.lf.core.base.AppControl;
 import top.lf.core.constant.AppConstant;
 import top.lf.core.event.WindowsCloseEvent;
 import top.lf.vo.FeeVo;
@@ -30,51 +31,51 @@ import java.util.ResourceBundle;
  * @Create At: 2018-10-01 13:13
  * @Description:
  */
-public class FeeMainControl implements Initializable {
+public class FeeMainControl implements AppControl {
 
     @FXML
-    private TableView<FeeVo> mzFeeTable;
+    public TableView<FeeVo> mzFeeTable;
 
     @FXML
-    private TableColumn<FeeVo, CheckBox> colCheckBox;
+    public TableColumn<FeeVo, CheckBox> colCheckBox;
 
     @FXML
-    private CheckBox colSelectAll;
+    public CheckBox colSelectAll;
 
     @FXML
-    private TableColumn<FeeVo, String> colVouchNo;
+    public TableColumn<FeeVo, String> colVouchNo;
 
     @FXML
-    private TableColumn<FeeVo, String> colFeeType;
+    public TableColumn<FeeVo, String> colFeeType;
 
     @FXML
-    private TableColumn<FeeVo, String> colFeeAmt;
+    public TableColumn<FeeVo, String> colFeeAmt;
 
     @FXML
-    private TableColumn<FeeVo, String> colVouchDate;
+    public TableColumn<FeeVo, String> colVouchDate;
 
     @FXML
-    private MenuItem itBtn0101;
+    public MenuItem itBtn0101;
 
     @FXML
-    private MenuItem itBtn0102;
+    public MenuItem itBtn0102;
 
     @FXML
-    private TextField patientNo;
+    public TextField patientNo;
 
     @FXML
-    private Button btnQueryFee;
+    public Button btnQueryFee;
 
     @FXML
-    private Label patientName;
+    public Label patientName;
 
     @FXML
-    private Label feeVouchNum;
+    public Label feeVouchNum;
 
     @FXML
-    private Label totalFeeAmt;
+    public Label totalFeeAmt;
 
-    private ObservableList<FeeVo> feeData;
+    public ObservableList<FeeVo> feeData;
 
 
     @Override
@@ -159,7 +160,7 @@ public class FeeMainControl implements Initializable {
         if("0.00".equals(feeAmtText) || Double.valueOf(feeAmtText) == 0.00){
             System.out.println("没有有效支付金额，不能发起支付！");
         }
-        Stage qrScanStage = AppContext.stageManager.getStage("qrScanStage");
+        Stage qrScanStage = AppContext.STAGE.get("qrScanStage");
         if(qrScanStage == null){
             try {
                 jump2Stage();
@@ -204,6 +205,12 @@ public class FeeMainControl implements Initializable {
         totalFeeAmt.setText(df.format(tmpAmt));
     }
 
+    @Override
+    public void resetUi() {
+        patientNo.setText("");
+        mzFeeTable.setItems(null);
+    }
+
     public void jump2Stage() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/QrScanUi.fxml"));
         Stage pkStage = new Stage();
@@ -214,8 +221,11 @@ public class FeeMainControl implements Initializable {
         pkStage.setAlwaysOnTop(true);//始终位于顶层显示
         pkStage.setResizable(false);//禁止调整窗口大小
         //AppContext.stageManager.addStage("qrScanStage",pkStage);
-        pkStage.setOnCloseRequest(new WindowsCloseEvent(pkStage,true));
+        AppContext.STAGE.put("qrScanStage",pkStage);
+        AppContext.CONTROL.put("feeMainControl",this);
+        pkStage.setOnCloseRequest(new WindowsCloseEvent("qrScanStage",true));
         pkStage.show();
+
     }
 
 }

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import top.lf.core.AppContext;
+import top.lf.core.base.AppControl;
 import top.lf.core.constant.AppConstant;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,7 +23,7 @@ import java.util.ResourceBundle;
  * @Create At: 2018-10-01 13:13
  * @Description:
  */
-public class LoginControl implements Initializable {
+public class LoginControl implements AppControl {
 
     @FXML
     private Button btnLogin;
@@ -56,7 +57,7 @@ public class LoginControl implements Initializable {
     }
 
     public void jump2Stage() throws IOException {
-        AppContext.stageManager.getStage("loginStage").close();
+        AppContext.STAGE_MANAGER.getStage("loginStage").close();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/feeMainUi.fxml"));
         Stage pkStage = new Stage();
         pkStage.setTitle(AppConstant.APP_VERSION);//窗口标题
@@ -65,9 +66,14 @@ public class LoginControl implements Initializable {
         pkStage.setScene(pkScene);
         //pkStage.setAlwaysOnTop(true);//始终位于顶层显示
         pkStage.setResizable(false);//禁止调整窗口大小
-        AppContext.stageManager.addStage("feeMainStage",pkStage);
+        //AppContext.STAGE_MANAGER.addStage("feeMainStage",pkStage);
+        AppContext.STAGE.put("feeMainStage",pkStage);
         pkStage.show();
     }
 
 
+    @Override
+    public void resetUi() {
+
+    }
 }

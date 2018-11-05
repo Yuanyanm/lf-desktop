@@ -35,7 +35,7 @@ public class MainStage extends Application {
         pkStage.setScene(pkScene);
         pkStage.setAlwaysOnTop(true);//始终位于顶层显示
         pkStage.setResizable(false);//禁止调整窗口大小
-        AppContext.stageManager.addStage("loginStage",pkStage);
+        AppContext.STAGE_MANAGER.addStage("loginStage",pkStage);
         pkStage.show();
     }
 }
