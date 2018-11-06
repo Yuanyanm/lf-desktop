@@ -6,7 +6,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,11 +14,9 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import top.lf.core.AppContext;
 import top.lf.core.base.AppControl;
-import top.lf.util.DateUtil;
 import top.lf.util.ImageUtil;
 
 import java.net.URL;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 /**
@@ -35,7 +32,6 @@ public class QrScanControl implements AppControl {
     private TextField qrCodeTxt;
     @FXML
     private Label msgLabel;
-
     @FXML
     private Label payMsg;
 

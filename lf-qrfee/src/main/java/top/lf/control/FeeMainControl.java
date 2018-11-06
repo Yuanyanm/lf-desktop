@@ -1,6 +1,5 @@
 package top.lf.control;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -8,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -143,10 +141,15 @@ public class FeeMainControl implements AppControl {
                 new FeeVo(cbListener,false,"S000021","检查费","88.62","2018-10-20 10:25:48")
         );
         colCheckBox.setCellValueFactory(new PropertyValueFactory<FeeVo,CheckBox>("cb"));
-        colVouchNo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVouchNo()));
+        colVouchNo.setCellValueFactory(new PropertyValueFactory<FeeVo,String>("vouchNo"));
+        colFeeType.setCellValueFactory(new PropertyValueFactory<FeeVo,String>("feeType"));
+        colFeeAmt.setCellValueFactory(new PropertyValueFactory<FeeVo,String>("feeAmt"));
+        colVouchDate.setCellValueFactory(new PropertyValueFactory<FeeVo,String>("vouchDate"));
+        /*colVouchNo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVouchNo()));
         colFeeType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFeeType()));
         colFeeAmt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFeeAmt()));
-        colVouchDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVouchDate()));
+        colVouchDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVouchDate()));*/
+
         mzFeeTable.setItems(feeData);
         autoCalculateFee();
     }
@@ -197,7 +200,7 @@ public class FeeMainControl implements AppControl {
             for (FeeVo itemData : feeData) {
                 if(itemData.cb.isSelected()){
                     i++;//累计选中单据数
-                    tmpAmt += Double.valueOf(itemData.feeAmt);//累计选中单据金额
+                    tmpAmt += Double.valueOf(itemData.getFeeAmt());//累计选中单据金额
                 }
             }
         }
@@ -208,7 +211,21 @@ public class FeeMainControl implements AppControl {
     @Override
     public void resetUi() {
         patientNo.setText("");
-        mzFeeTable.setItems(null);
+        //CheckBox选中改变事件
+        ChangeListener<Boolean> cbListener = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                autoCalculateFee();
+            }
+        };
+        feeData = FXCollections.observableArrayList(
+                new FeeVo(cbListener,true,"S005001","检验费","33.85","2018-10-20 10:35:48"),
+                new FeeVo(cbListener,true,"S005011","西药费","24.56","2018-10-20 10:15:48"),
+                new FeeVo(cbListener,true,"S005001","检验费","33.85","2018-10-20 10:35:48"),
+                new FeeVo(cbListener,true,"S005011","西药费","24.56","2018-10-20 10:15:48"),
+                new FeeVo(cbListener,true,"S005001","检验费","33.85","2018-10-20 10:35:48")
+        );
+       // mzFeeTable.setItems(feeData);
     }
 
     public void jump2Stage() throws IOException {
