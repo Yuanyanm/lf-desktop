@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>扫码支付系统(Web) Ver1.0</title>
+    <script src="assets/extjs/ext-all.js"></script>
+    <script src="assets/extjs/locale/ext-locale-zh_CN.js"></script>
+    <link href="assets/extjs/theme/ext-theme-classic-all.css" rel="stylesheet"/>
+</head>
+<body>
+<script type="text/javascript">
+    Ext.onReady(function () {
+        //Ext.Msg.alert('title', 'Hello World!');
+        var tabs = new Ext.TabPanel({
+            bodyStyle: 'margin-top:0px',
+            renderTo: Ext.getBody(),
+            activeTab: 0,
+            deferredRender: false,
+            tabPosition: 'top',
+            height: 380,
+            enableTabScroll: true,
+            items: [{
+                title: '基本查询',
+                frame: true,
+                items: [basePanel],
+            }, {
+                title: '按系统查询',
+                frame: true,
+                items: [batchPanel]
+            }]
+
+        });
+
+        var batchItems = new Ext.Panel({
+            layout: 'form',
+            height: 380,
+            style: 'margin:5 0 0 5',
+            items: [{
+                layout: 'column',
+                items: [{
+                    layout: 'form',
+                    columnWidth: 600,
+                    defaults: {
+                        anchor: anchor
+                    },
+                    labelWidth: 600,
+                    items: [{}]
+                }]
+            }]
+        });
+
+        var batchPanel = {
+            id: 'query_view',
+            autoScroll: true,
+            border: false,
+            hideBorders: true,
+            layout: 'column',
+            defaults: {
+                layout: 'form',
+                columnWidth: 1,
+                defaults: {
+                    anchor: '-20'
+                }
+            },
+            items: [{
+                items: batchItems
+            }]
+        };
+    });
+</script>
+</body>
+</html>

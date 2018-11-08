@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我是Index</title>
+    <script type="text/javascript" src="${ctxPath}assets/libs/jquery-3.2.1/jquery-3.2.1.js"></script>
+    <style type="text/css">
+        html,body{
+            margin: 0;
+            height:100%;
+        }
+        .align-center{
+            margin:0 auto; /* 居中 这个是必须的，，其它的属性非必须 */
+            width:500px; /* 给个宽度 顶到浏览器的两边就看不出居中效果了 */
+            background:darkkhaki; /* 背景色 */
+            text-align: center;
+            font-size: x-large;
+        }
+    </style>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            type: "POST",
+            cache: false,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == '401') {
+                    layer.msg("【E401】您的登录已经失效，请重新登录！", {icon: 5,time:3000},function(){
+                        location.href="login";
+                    });
+                }else{
+                    layer.msg("业务执行失败，请稍后再试！", {icon: 5,time:2000});
+                }
+            },
+            statusCode: {
+                401:function(xhr){
+                    ajaxStatusAnalysis('401',xhr);
+                },
+                403: function(xhr){
+                    ajaxStatusAnalysis('403',xhr);
+                },
+                404: function(xhr){
+                    ajaxStatusAnalysis('404',xhr);
+                },
+                405: function(xhr){
+                    ajaxStatusAnalysis('405',xhr);
+                },
+                500: function(xhr){
+                    ajaxStatusAnalysis('500',xhr);
+                },
+                501: function(xhr){
+                    ajaxStatusAnalysis('501',xhr);
+                },
+                503: function(xhr){
+                    ajaxStatusAnalysis('503',xhr);
+                }
+            }
+        });
+        //Ajax异常统一解析并弹窗提示
+        function  ajaxStatusAnalysis(code,resData){
+            var data = resData.responseJSON;
+            if ( typeof data == "undefined" ) {
+                data = resData.responseText;
+                if ( typeof data == "string" && data.length != 0 ) {
+                    data = ( new Function( "return " + data ) )();
+                }
+            }
+            if (typeof data == "object" && typeof data.message == "string" && data.message.length != 0 ) {
+                data = data.message;
+            }
+            console.log("Ajax Error,code:"+code+" |Data: "+JSON.stringify(resData));
+            var codeSpan = "【E"+(code||'000')+"】";
+            //layer.msg(codeSpan+data,{icon: 5,time:3000});
+            alert(codeSpan+data);
+        }
+
+        //**************日期格式函数**************
+        Date.prototype.format = function (fmt) {
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+        //常用工具类简单封装
+        UtilTools = {
+            getDictInfo:function(codeType,el){//第一个参数是码表类型 第二个参数是el的id值
+                if (codeType == null || typeof codeType == "undefined" || typeof codeType != "string" || codeType.length == 0 ) {
+                    layer.msg("数据字典查询参数有误，请核对！", {icon: 7,time:3000});
+                }
+                var codeArry = new Array();
+                codeArry.push(codeType);
+                var inParams = {in:{dictCodes:JSON.stringify(codeArry)}};
+                var tmpOption = "";//构造下拉列表数据
+                $.ajax({
+                    url:"sysdicts/getDict4Select",
+                    data: inParams,//传入已封装的参数
+                    success: function(resData) {
+                        //业务异常判断与处理
+                        if (!resData.success) {
+                            layer.msg(resData.message, {icon: 5,time:2000});
+                            return;
+                        }
+                        //解析封装返回数据
+                        var dictList = JSON.parse(resData.out.list);
+                        for(var p in dictList){
+                            var codeInfos = dictList[p];
+                            for (var ix in codeInfos) {
+                                var dicInfo = codeInfos[ix];
+                                tmpOption += "<option value='"+dicInfo.dictValue+"'>"+dicInfo.dictName+"</option>";
+                            }
+                        }
+                        //console.log("======= "+tmpOption);
+                        $('#'+el).append(tmpOption);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        layer.msg("获取下拉数据失败，请联系管理员！", {icon: 5,time:3000});
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="align-center">
+    Index.jsp ${ctxPath}<br>
+    <button id="btnSubmit">按钮</button>
+</div>
+<script type="text/javascript">
+    $('#btnSubmit').bind('click', function (event) {
+        //alert("AAAAA");
+        $.ajax({
+            type: "POST",
+            url:"userPwdModify",
+            data: {},//传入已封装的参数
+            dataType: "json",
+            success: function(resData) {
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log("==== "+JSON.stringify(XMLHttpRequest));
+                console.log("======= "+JSON.stringify(textStatus));
+                console.log("========== "+JSON.stringify(errorThrown));
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

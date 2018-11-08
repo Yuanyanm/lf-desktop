@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- ##################################################################################### -->
+    <!-- 启用(激活)spring对“@xxxxxxx”注解的支持(方式01),仅仅注册Bean,不会自动装配(DI)-->
+    <!--<context:annotation-config />-->
+
+    <!-- 启用(激活)spring对“@xxxxxxx”注解的支持(方式02), 并保证@Required、@Autowired的属性被注入(自动装配) -->
+    <context:component-scan base-package="com.lf.**.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <!-- ##################################################################################### -->
+    <!-- 启用spring mvc 注解(方式01),自动(隐式)注册RequestMappingHandlerMapping、RequestMappingHandlerAdapter,
+    这是Spring MVC为@Controller分发请求所必需的，并且提供了对Req,Rsp的数据绑定及转换支持 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!-- 映射html,plain格式httpmessage转换器 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>text/plain;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+            <!-- 映射json格式httpmessage转换器 -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+                <!-- 自定义特殊转换实现(如：null值、日期、驼峰转换等) -->
+                <property name="objectMapper">
+                    <!-- 方式01,个性化硬编码+配置 -->
+                    <bean class="com.lf.framework.core.jsonmapper.CustomerObjectMapper">
+                        <property name="propertyNamingStrategy">
+                            <bean class="com.fasterxml.jackson.databind.PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy"/>
+                        </property>
+                    </bean>
+                    <!-- 方式02,配置 -->
+                    <!--<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                        &lt;!&ndash; 处理responseBody 里面日期类型 &ndash;&gt;
+                        <property name="dateFormat">
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+                            </bean>
+                        </property>
+                        &lt;!&ndash; 为null字段时不显示 &ndash;&gt;
+                        <property name="serializationInclusion">
+                            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+                        </property>
+                        <property name="propertyNamingStrategy">
+                            <bean class="com.fasterxml.jackson.databind.PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy"/>
+                        </property>
+                    </bean>-->
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 启用spring mvc 注解(方式02) -->
+    <!-- 处理在类级别上的@RequestMapping注解 -->
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>-->
+
+    <!-- ##################################################################################### -->
+    <!-- 静态资源映射及路径转换，相对于WebRoot根目录 -->
+    <!-- 方式01(不够灵活) -->
+    <!--<mvc:default-servlet-handler/>-->
+    <!-- 方式02 -->
+    <mvc:resources mapping="/favicon.ico" location="/assets/"/>
+    <mvc:resources mapping="/assets/**" location="/assets/"/>
+    <mvc:resources mapping="/static/**" location="/static/"/>
+    <mvc:resources mapping="/resources/**" location="/WEB-INF/viewpage/"/>
+
+    <!-- ##################################################################################### -->
+    <!-- 自定义拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/assets/**"/>
+            <mvc:exclude-mapping path="/static/**"/>
+            <mvc:exclude-mapping path="/resources/**"/>
+            <mvc:exclude-mapping path="/favicon.ico"/>
+            <bean class="com.lf.framework.core.interceptor.RequestInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- ##################################################################################### -->
+    <!-- 全局统一异常处理 -->
+    <bean id="handlerExceptionResolver" class="com.lf.framework.core.resolver.GlobalHandlerExceptionResolver">
+        <property name="defaultErrorView" value="/errorpage/500" />
+    </bean>
+
+    <!-- ##################################################################################### -->
+    <!-- 可以直接相应转发的页面, 而无需再经过Handler的方法.(请求路径path,直接返回视图解析器对应的视图) -->
+    <mvc:view-controller path="/success" view-name="success"/>
+
+</beans>

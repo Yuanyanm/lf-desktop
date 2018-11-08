@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import top.lf.core.AppContext;
 import top.lf.core.base.AppControl;
@@ -33,6 +35,9 @@ public class FeeMainControl implements AppControl {
 
     @FXML
     public TableView<FeeVo> mzFeeTable;
+
+    @FXML
+    public Pagination pagInation;
 
     @FXML
     public TableColumn<FeeVo, CheckBox> colCheckBox;
@@ -75,9 +80,14 @@ public class FeeMainControl implements AppControl {
 
     public ObservableList<FeeVo> feeData;
 
+    @FXML
+    public WebView inxWebView;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        WebEngine webEngine = inxWebView.getEngine();
+        webEngine.load("http://127.0.0.1:6677");
 
         //行选中事件(同一行不能连续两次触发该事件)
         mzFeeTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<FeeVo>() {
