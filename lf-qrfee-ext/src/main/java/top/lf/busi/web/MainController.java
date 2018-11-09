@@ -1,8 +1,11 @@
 package top.lf.busi.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @Author: YuanYan
@@ -21,6 +24,12 @@ public class MainController {
     @RequestMapping("/")
     public String homeInx() {
         return "index.html";
+    }
+
+    @RequestMapping(value = "/t/{viewId}",method = RequestMethod.GET)
+    public ModelAndView getUser(@PathVariable String viewId) {
+        System.out.println("============ viewId: "+viewId);
+        return  new ModelAndView(viewId);
     }
 
 
