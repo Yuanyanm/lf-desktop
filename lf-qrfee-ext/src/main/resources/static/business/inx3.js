@@ -1,19 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%--ext-all-neptune.css不支持IE6 --%>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/common/ext-4.2.1/resources/css/ext-all-neptune.css">
-    <script src="${pageContext.request.contextPath}/common/ext-4.2.1/ext-all.js"></script>
-    <script src="${pageContext.request.contextPath}/common/bootstrap/js/jquery.js"></script>
-    <script src="${pageContext.request.contextPath}/common/ext-4.2.1/locale/ext-lang-zh_CN.js"></script>
-
-    <title>填写用户管理的数据</title>
-    <script type="text/javascript">
 //获取基本路径
-var serverPath="${pageContext.request.contextPath}";
+var serverPath="http://127.0.0.1:6677";
 //到数据库查询数据
 var doQueryUrl = serverPath + "/program.action?method=doQuery";
 //保存数据
@@ -471,11 +457,3 @@ function deleteProdcut(){
         });
     }
 }
-
-</script>
-</head>
-
-<body>
-
-</body>
-</html>
