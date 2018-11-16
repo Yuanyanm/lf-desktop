@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import top.lf.core.cmd.Command;
 
 /**
  * @Author: YuanYan
@@ -34,6 +35,13 @@ public class MainController {
         mv.setViewName(viewId);
         mv.addObject("_dc", DateUtil.currentSeconds()+"");
         return  mv;
+    }
+
+    @RequestMapping(value = "/t/queryFee")
+    @ResponseBody
+    public Command getFeeList() {
+        System.out.println("1.######################## ");
+        return  new Command();
     }
 
 
